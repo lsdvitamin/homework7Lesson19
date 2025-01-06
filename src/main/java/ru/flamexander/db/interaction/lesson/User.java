@@ -3,13 +3,13 @@ package ru.flamexander.db.interaction.lesson;
 @RepositoryTable(title = "users")
 public class User {
     @RepositoryIdField
-    private Long id;
-    @RepositoryField
-    private String login;
-    @RepositoryField
-    private String password;
-    @RepositoryField
-    private String nickname;
+    public Long id;
+    @RepositoryField(name = "login")
+    public String login;
+    @RepositoryField(name = "pass")
+    public String password;
+    @RepositoryField(name = "nickname")
+    public String nickname;
 
     public Long getId() {
         return id;

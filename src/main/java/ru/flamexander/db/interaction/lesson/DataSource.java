@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataSource {
-    private String url;
+    String url;
+    String login;
+    String password;
     private Connection connection;
     private Statement statement;
 
@@ -18,12 +20,14 @@ public class DataSource {
         return statement;
     }
 
-    public DataSource(String url) {
+    public DataSource(String url, String login, String password) {
         this.url = url;
+        this.login = login;
+        this.password = password;
     }
 
     public void connect() throws SQLException {
-        connection = DriverManager.getConnection(url);
+        connection = DriverManager.getConnection(url, login, password);
         statement = connection.createStatement();
         System.out.println("Установлено соединение с БД: " + url);
     }

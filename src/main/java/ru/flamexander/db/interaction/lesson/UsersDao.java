@@ -10,21 +10,14 @@ import java.util.Optional;
 public class UsersDao {
     private DataSource dataSource;
 
+
+
     public UsersDao(DataSource dataSource) {
         this.dataSource = dataSource;
+        new DbMigrator(dataSource);
+
     }
 
-    public void init() throws SQLException {
-        dataSource.getStatement().executeUpdate(
-                "" +
-                        "create table if not exists users (" +
-                        "    id          bigserial primary key," +
-                        "    login       varchar(255)," +
-                        "    password    varchar(255)," +
-                        "    nickname    varchar(255)" +
-                        ")"
-        );
-    }
 
     public Optional<User> getUserByLoginAndPassword(String login, String password) {
         try (ResultSet rs = dataSource.getStatement().executeQuery("select * from users where login = '" + login + "' AND password = '" + password + "'")) {

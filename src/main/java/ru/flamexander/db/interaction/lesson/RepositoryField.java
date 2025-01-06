@@ -1,11 +1,11 @@
 package ru.flamexander.db.interaction.lesson;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
+@Documented
+@Inherited
 public @interface RepositoryField {
+    String name() default "";
 }
