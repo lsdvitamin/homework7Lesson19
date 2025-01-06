@@ -7,25 +7,25 @@ public class MockChatServer {
         DataSource dataSource = null;
         try {
             System.out.println("Сервер чата запущен");
-            dataSource = new DataSource("jdbc:h2:file:./db;MODE=PostgreSQL");
+            //dataSource = new DataSource("jdbc:h2:file:./db;MODE=PostgreSQL");
+            dataSource = new DataSource("jdbc:postgresql://localhost:5432/otus", "java", "java");
             dataSource.connect();
-
             UsersDao usersDao = new UsersDao(dataSource);
-            usersDao.init();
+            DbMigrator.runScript();
             System.out.println(usersDao.getAllUsers());
-//            usersDao.save(new User(null, "A", "A", "A"));
-//            System.out.println(usersDao.getAllUsers());
+
             AbstractRepository<User> usersRepository = new AbstractRepository<>(dataSource, User.class);
-            usersRepository.save(new User(null, "B", "B", "B"));
-            System.out.println(usersDao.getAllUsers());
+            usersRepository.save(new User(null, "Login1", "pass1", "nickname1"));
+            usersRepository.save(new User(null, "Login2", "pass2", "nickname2"));
+            usersRepository.update(new User(1L, "Login_new1", "pass_new1", "nickname_new1"));
+            System.out.println(usersRepository.findById(1));
 
-//            AuthenticationService authenticationService = new AuthenticationService(usersDao);
-//            UsersStatisticService usersStatisticService = new UsersStatisticService(usersDao);
-//            BonusService bonusService = new BonusService(dataSource);
-//            bonusService.init();
+            for (User user: usersRepository.findByAll()) {
+                System.out.println(user);
+            }
 
-//            authenticationService.register("A", "A", "A");
-            // Основная работа сервера чата
+            usersRepository.delete(new User(1L, "Login_new1", "pass_new1", "nickname_new1"));
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
